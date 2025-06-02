@@ -429,19 +429,9 @@ MIT License - Bạn có thể:
 
 ## 👨‍💻 Tác giả
 
-**Kỹ sư phần mềm kỳ cựu** - *Senior Software Engineer*
-
-- 💼 **30+ năm kinh nghiệm** phát triển phần mềm
-- 🏗️ **Chuyên về:** Kiến trúc hệ thống, DevOps, AI/ML, Full-stack
 - 🎯 **Tối ưu:** Performance, Code quality, Best practices
-- 📧 **Contact:** [Your Email]
-- 🌐 **Portfolio:** [Your Website]
-
-### 🙏 **Acknowledgments**
-- **Bootstrap Team** - UI framework tuyệt vời
-- **Bootstrap Icons** - Icon set hoàn chỉnh  
-- **Mozilla MDN** - Web API documentation
-- **Picsum Photos** - Random artwork service
+- 📧 **Contact:** [dangkhoahuynh2511@gmail.com]
+- 🌐 **Portfolio:** [kaih.vercel.app]
 
 ---
 
