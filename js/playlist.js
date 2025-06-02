@@ -52,10 +52,7 @@ class PlaylistManager {
     initializeElements() {
         this.playlistContainer = document.getElementById('playlist');
         this.searchInput = document.getElementById('search-songs');
-        this.clearPlaylistBtn = document.getElementById('clear-playlist');
         this.savePlaylistBtn = document.getElementById('save-playlist');
-        this.addSongBtn = document.getElementById('add-song-btn');
-        this.songFileInput = document.getElementById('song-file-input');
         
         // Add Song Modal
         this.addSongModal = new bootstrap.Modal(document.getElementById('addSongModal'));
@@ -108,59 +105,6 @@ class PlaylistManager {
             });
         }
 
-        // Clear playlist button
-        if (this.clearPlaylistBtn) {
-            this.clearPlaylistBtn.addEventListener('click', () => {
-                this.clearPlaylist();
-            });
-        }
-
-        // Save playlist button
-        if (this.savePlaylistBtn) {
-            this.savePlaylistBtn.addEventListener('click', () => {
-                this.savePlaylist();
-            });
-        }
-
-        // Add song button
-        if (this.addSongBtn) {
-            this.addSongBtn.addEventListener('click', () => {
-                this.triggerFileSelect();
-            });
-        }
-
-        // File input change
-        if (this.songFileInput) {
-            this.songFileInput.addEventListener('change', (e) => {
-                this.handleFileSelect(e);
-            });
-        }
-
-        // Confirm add song button in modal
-        const confirmAddBtn = document.getElementById('confirm-add-song');
-        if (confirmAddBtn) {
-            confirmAddBtn.addEventListener('click', () => {
-                this.confirmAddSong();
-            });
-        }
-
-        // Confirm add URL button
-        const confirmAddUrlBtn = document.getElementById('confirm-add-url');
-        if (confirmAddUrlBtn) {
-            confirmAddUrlBtn.addEventListener('click', () => {
-                this.confirmAddURL();
-            });
-        }
-
-        // URL Form submission
-        const urlForm = document.getElementById('url-form');
-        if (urlForm) {
-            urlForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                this.confirmAddURL();
-            });
-        }
-
         // Tab switching
         const uploadTab = document.getElementById('upload-tab');
         const urlTab = document.getElementById('url-tab');
@@ -196,6 +140,13 @@ class PlaylistManager {
                 this.focusSearch();
             }
         });
+
+        // Save playlist button
+        if (this.savePlaylistBtn) {
+            this.savePlaylistBtn.addEventListener('click', () => {
+                this.savePlaylist();
+            });
+        }
     }
 
     /**

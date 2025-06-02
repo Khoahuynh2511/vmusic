@@ -431,7 +431,7 @@ MIT License - Bạn có thể:
 
 - 🎯 **Tối ưu:** Performance, Code quality, Best practices
 - 📧 **Contact:** [dangkhoahuynh2511@gmail.com]
-- 🌐 **Portfolio:** [kaih.vercel.app]
+- 🌐 **Portfolio:** [http://kaih.vercel.app]
 
 ---
 
@@ -441,9 +441,8 @@ MIT License - Bạn có thể:
 
 **⭐ Nếu thấy hữu ích, hãy star repo này nhé!**
 
-[![GitHub stars](https://img.shields.io/github/stars/username/music-player?style=social)](https://github.com/username/music-player)
-[![GitHub forks](https://img.shields.io/github/forks/username/music-player?style=social)](https://github.com/username/music-player)
+[![GitHub stars](https://img.shields.io/github/stars/Khoahuynh2511/music-player?style=social)](https://github.com/Khoahuynh2511/vmusic)
+[![GitHub forks](https://img.shields.io/github/forks/Khoahuynh2511/music-player?style=social)](https://github.com/Khoahuynh2511/vmusic)
 
 ---
-
-*Cập nhật lần cuối: 06/12/2024* 🗓️ 
+ 
