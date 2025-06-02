@@ -62,18 +62,25 @@ class PlaylistManager {
      * Tải danh sách bài hát mặc định
      */
     loadDefaultSongs() {
-        // Tự động load Radio Browser khi vào app
-        console.log('🚀 Auto-loading Radio Browser...');
-        setTimeout(() => {
-            this.loadRadioStations();
-        }, 1000); // Delay 1s để app load xong
+        // Kiểm tra xem đã có radio stations hay chưa
+        const hasRadioStations = this.songs.some(song => song.isRadio);
+        
+        if (!hasRadioStations) {
+            // Chỉ tự động load Radio Browser khi chưa có radio stations
+            console.log('🚀 Auto-loading Radio Browser...');
+            setTimeout(() => {
+                this.loadRadioStations();
+            }, 1000); // Delay 1s để app load xong
 
-        // Hiện thông báo cho user
-        setTimeout(() => {
-            if (window.showNotification) {
-                window.showNotification('📻 Đang tự động tải Radio Stations...', 'info');
-            }
-        }, 500);
+            // Hiện thông báo cho user
+            setTimeout(() => {
+                if (window.showNotification) {
+                    window.showNotification('📻 Đang tự động tải Radio Stations...', 'info');
+                }
+            }, 500);
+        } else {
+            console.log('📻 Radio stations đã có sẵn, bỏ qua auto-load');
+        }
     }
 
     /**
@@ -1092,13 +1099,15 @@ class PlaylistManager {
                     country: station.country
                 }));
                 
-                // Thêm vào playlist hiện tại
-                this.songs.push(...radioStations);
-                this.saveToStorage();
-                this.render();
+                // Thêm từng radio station và kiểm tra trùng lặp
+                let addedCount = 0;
+                radioStations.forEach(station => {
+                    const success = this.addSong(station);
+                    if (success) addedCount++;
+                });
                 
-                this.showNotification(`✅ Đã thêm ${radioStations.length} radio stations!`, 'success');
-                console.log(`📻 Loaded ${radioStations.length} radio stations`);
+                this.showNotification(`✅ Đã thêm ${addedCount} radio stations mới!`, 'success');
+                console.log(`📻 Loaded ${addedCount}/${radioStations.length} radio stations`);
             }
             
         } catch (error) {
