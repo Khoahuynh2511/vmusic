@@ -381,7 +381,7 @@ class MusicPlayerApp {
                     <ul class="list-unstyled small">
                         <li>🎵 Phát nhạc với đầy đủ controls</li>
                         <li>🔀 Shuffle & Repeat modes</li>
-                        <li>🔍 Tìm kiếm bài hát</li>
+                        <li>🔍 Tìm kiếm kênh nghe nhạc</li>
                         <li>🌙 Dark/Light mode</li>
                         <li>⏰ Sleep timer</li>
                         <li>💾 Lưu playlist tự động</li>
