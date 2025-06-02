@@ -62,25 +62,22 @@ class PlaylistManager {
      * Tải danh sách bài hát mặc định
      */
     loadDefaultSongs() {
-        // Kiểm tra xem đã có radio stations hay chưa
-        const hasRadioStations = this.songs.some(song => song.isRadio);
+        // Luôn reset và load lại radio stations mỗi lần vào web
+        console.log('🚀 Resetting và auto-loading Radio Browser...');
         
-        if (!hasRadioStations) {
-            // Chỉ tự động load Radio Browser khi chưa có radio stations
-            console.log('🚀 Auto-loading Radio Browser...');
-            setTimeout(() => {
-                this.loadRadioStations();
-            }, 1000); // Delay 1s để app load xong
+        // Xóa tất cả radio stations cũ trước khi load mới
+        this.removeAllRadioStations();
+        
+        setTimeout(() => {
+            this.loadRadioStations();
+        }, 1000); // Delay 1s để app load xong
 
-            // Hiện thông báo cho user
-            setTimeout(() => {
-                if (window.showNotification) {
-                    window.showNotification('📻 Đang tự động tải Radio Stations...', 'info');
-                }
-            }, 500);
-        } else {
-            console.log('📻 Radio stations đã có sẵn, bỏ qua auto-load');
-        }
+        // Hiện thông báo cho user
+        setTimeout(() => {
+            if (window.showNotification) {
+                window.showNotification('📻 Đang reset và tải Radio Stations...', 'info');
+            }
+        }, 500);
     }
 
     /**
@@ -1099,21 +1096,28 @@ class PlaylistManager {
                     country: station.country
                 }));
                 
-                // Thêm từng radio station và kiểm tra trùng lặp
-                let addedCount = 0;
-                radioStations.forEach(station => {
-                    const success = this.addSong(station);
-                    if (success) addedCount++;
-                });
+                // Thêm tất cả radio stations mới (đã clear cũ rồi)
+                this.songs.push(...radioStations);
+                this.saveToStorage();
+                this.render();
                 
-                this.showNotification(`✅ Đã thêm ${addedCount} radio stations mới!`, 'success');
-                console.log(`📻 Loaded ${addedCount}/${radioStations.length} radio stations`);
+                this.showNotification(`✅ Đã load ${radioStations.length} radio stations mới!`, 'success');
+                console.log(`📻 Fresh loaded ${radioStations.length} radio stations`);
             }
             
         } catch (error) {
             console.error('❌ Lỗi khi tải radio stations:', error);
             this.showNotification('❌ Không thể tải radio stations.', 'error');
         }
+    }
+
+    /**
+     * Xóa tất cả radio stations cũ trước khi load mới
+     */
+    removeAllRadioStations() {
+        this.songs = this.songs.filter(song => !song.isRadio);
+        this.saveToStorage();
+        this.render();
     }
 }
 
