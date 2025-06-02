@@ -1,0 +1,499 @@
+/* ========================================
+   CSS VARIABLES (Light Theme)
+======================================== */
+:root {
+    --primary-color: #6366f1;
+    --secondary-color: #8b5cf6;
+    --success-color: #10b981;
+    --danger-color: #ef4444;
+    --warning-color: #f59e0b;
+    --info-color: #06b6d4;
+    
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8fafc;
+    --bg-tertiary: #f1f5f9;
+    
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --text-muted: #94a3b8;
+    
+    --border-color: #e2e8f0;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    
+    --card-bg: #ffffff;
+    --player-card-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ========================================
+   DARK THEME VARIABLES
+======================================== */
+[data-theme="dark"] {
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-tertiary: #334155;
+    
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    
+    --border-color: #475569;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    
+    --card-bg: #1e293b;
+    --player-card-bg: linear-gradient(135deg, #4c1d95 0%, #581c87 100%);
+}
+
+/* ========================================
+   GLOBAL STYLES
+======================================== */
+* {
+    transition: var(--transition);
+}
+
+body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+}
+
+/* ========================================
+   LOADING SCREEN
+======================================== */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-primary);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease-out;
+}
+
+.loading-overlay.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* ========================================
+   TYPOGRAPHY
+======================================== */
+.gradient-text {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.display-4 {
+    font-weight: 800;
+    letter-spacing: -0.025em;
+}
+
+/* ========================================
+   CARDS & CONTAINERS
+======================================== */
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px var(--shadow-color);
+    transition: var(--transition);
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -3px var(--shadow-color);
+}
+
+.player-card {
+    background: var(--player-card-bg);
+    color: white;
+    border: none;
+}
+
+.player-card .card-body {
+    padding: 2rem;
+}
+
+/* ========================================
+   SONG ARTWORK
+======================================== */
+.song-artwork img {
+    border-radius: 1rem;
+    transition: var(--transition);
+    border: 4px solid rgba(255, 255, 255, 0.2);
+}
+
+.song-artwork img:hover {
+    transform: scale(1.05);
+}
+
+/* ========================================
+   CONTROLS
+======================================== */
+.controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.controls .btn {
+    border-radius: 50%;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: var(--transition);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.controls .btn-lg {
+    width: 4rem;
+    height: 4rem;
+    font-size: 1.5rem;
+}
+
+.controls .btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.controls .btn:active {
+    transform: scale(0.95);
+}
+
+/* ========================================
+   PROGRESS BAR
+======================================== */
+.progress {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.progress:hover {
+    transform: scaleY(1.2);
+}
+
+.progress-bar {
+    background: linear-gradient(90deg, #ffffff, #f0f0f0);
+    border-radius: 0.5rem;
+    transition: width 0.1s ease-out;
+}
+
+/* ========================================
+   VOLUME CONTROL
+======================================== */
+.volume-control {
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 0.75rem;
+    backdrop-filter: blur(10px);
+}
+
+.form-range {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 0.5rem;
+    outline: none;
+}
+
+.form-range::-webkit-slider-thumb {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    background: #ffffff;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    transition: var(--transition);
+}
+
+.form-range::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+.form-range::-moz-range-thumb {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    background: #ffffff;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* ========================================
+   PLAYLIST
+======================================== */
+.playlist-container {
+    max-height: 400px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-color) var(--bg-tertiary);
+}
+
+.playlist-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.playlist-container::-webkit-scrollbar-track {
+    background: var(--bg-tertiary);
+    border-radius: 0.25rem;
+}
+
+.playlist-container::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 0.25rem;
+}
+
+.playlist-item {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.playlist-item:hover {
+    background: var(--bg-tertiary);
+}
+
+.playlist-item.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+.playlist-item .song-info {
+    flex-grow: 1;
+    min-width: 0;
+}
+
+.playlist-item .song-title {
+    font-weight: 600;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.playlist-item .song-artist {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.playlist-item .song-duration {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+/* ========================================
+   BUTTONS & INTERACTIONS
+======================================== */
+.btn {
+    border-radius: 0.75rem;
+    font-weight: 600;
+    transition: var(--transition);
+    border: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+}
+
+.btn-success {
+    background: linear-gradient(135deg, var(--success-color), #059669);
+}
+
+.btn-outline-secondary {
+    border: 2px solid var(--text-muted);
+    color: var(--text-secondary);
+}
+
+.btn-outline-secondary:hover {
+    background: var(--text-muted);
+    color: var(--bg-primary);
+}
+
+/* ========================================
+   MODAL STYLES
+======================================== */
+.modal-content {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    box-shadow: 0 25px 50px -12px var(--shadow-color);
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--border-color);
+    padding: 1.5rem;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+/* ========================================
+   TOAST NOTIFICATIONS
+======================================== */
+.toast {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 25px -3px var(--shadow-color);
+}
+
+.toast-header {
+    background: transparent;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* ========================================
+   UTILITY CLASSES
+======================================== */
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+.border-bottom {
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+/* ========================================
+   ANIMATIONS
+======================================== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-out;
+}
+
+.slide-in {
+    animation: slideIn 0.3s ease-out;
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+======================================== */
+@media (max-width: 768px) {
+    .container-fluid {
+        padding: 1rem;
+    }
+    
+    .player-card .card-body {
+        padding: 1.5rem;
+    }
+    
+    .song-artwork img {
+        width: 150px !important;
+        height: 150px !important;
+    }
+    
+    .controls .btn {
+        width: 2.5rem;
+        height: 2.5rem;
+        font-size: 1rem;
+    }
+    
+    .controls .btn-lg {
+        width: 3.5rem;
+        height: 3.5rem;
+        font-size: 1.25rem;
+    }
+    
+    .playlist-container {
+        max-height: 300px;
+    }
+}
+
+@media (max-width: 576px) {
+    .display-4 {
+        font-size: 2rem;
+    }
+    
+    .song-artwork img {
+        width: 120px !important;
+        height: 120px !important;
+    }
+    
+    .playlist-item {
+        padding: 0.75rem;
+    }
+    
+    .controls {
+        gap: 0.25rem;
+    }
+} 

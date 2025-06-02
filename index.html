@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎵 Music Player - Trình phát nhạc Online</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-overlay">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Đang tải...</span>
+        </div>
+        <p class="mt-3">Đang khởi tạo trình phát nhạc...</p>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container-fluid py-4">
+        <!-- Header -->
+        <header class="text-center mb-4">
+            <h1 class="display-4 fw-bold gradient-text">
+                <i class="bi bi-music-note-beamed"></i>
+                Music Player
+            </h1>
+            <p class="lead text-muted">Trình phát nhạc trực tuyến</p>
+            
+            <!-- Theme Toggle & Sleep Timer -->
+            <div class="d-flex justify-content-center gap-3 mt-3">
+                <button id="theme-toggle" class="btn btn-outline-secondary btn-sm">
+                    <i class="bi bi-moon-fill"></i>
+                    <span>Dark Mode</span>
+                </button>
+                <button id="sleep-timer-btn" class="btn btn-outline-info btn-sm">
+                    <i class="bi bi-clock"></i>
+                    <span>Sleep Timer</span>
+                </button>
+            </div>
+        </header>
+
+        <div class="row g-4">
+            <!-- Left Panel - Current Song Info -->
+            <div class="col-lg-4">
+                <div class="card h-100 player-card">
+                    <div class="card-body text-center">
+                        <div class="song-artwork mb-3">
+                            <img id="song-artwork" src="images/default-artwork.jpg" alt="Album Art" 
+                                 class="img-fluid rounded shadow" style="width: 200px; height: 200px; object-fit: cover;">
+                        </div>
+                        
+                        <h5 id="current-song-title" class="card-title text-truncate">
+                            Chọn bài hát để phát
+                        </h5>
+                        
+                        <p id="current-artist" class="card-text text-muted">
+                            Không có bài hát nào
+                        </p>
+                        
+                        <!-- Audio Element -->
+                        <audio id="audio" preload="metadata"></audio>
+                        
+                        <!-- Progress Bar -->
+                        <div class="progress mb-3" style="height: 6px;">
+                            <div id="progress-bar" class="progress-bar" role="progressbar" 
+                                 style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                            </div>
+                        </div>
+                        
+                        <!-- Time Display -->
+                        <div class="d-flex justify-content-between mb-3">
+                            <small id="current-time" class="text-muted">0:00</small>
+                            <small id="duration" class="text-muted">0:00</small>
+                        </div>
+                        
+                        <!-- Main Controls -->
+                        <div class="controls mb-3">
+                            <button id="shuffle" class="btn btn-outline-secondary btn-sm me-2" title="Phát ngẫu nhiên">
+                                <i class="bi bi-shuffle"></i>
+                            </button>
+                            
+                            <button id="prev" class="btn btn-primary btn-lg me-2" title="Bài trước">
+                                <i class="bi bi-skip-start-fill"></i>
+                            </button>
+                            
+                            <button id="play-pause" class="btn btn-success btn-lg me-2" title="Phát/Dừng">
+                                <i class="bi bi-play-fill"></i>
+                            </button>
+                            
+                            <button id="next" class="btn btn-primary btn-lg me-2" title="Bài tiếp">
+                                <i class="bi bi-skip-end-fill"></i>
+                            </button>
+                            
+                            <button id="repeat" class="btn btn-outline-secondary btn-sm" title="Lặp lại">
+                                <i class="bi bi-arrow-repeat"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- Volume Control -->
+                        <div class="volume-control">
+                            <label class="form-label d-flex align-items-center">
+                                <i class="bi bi-volume-up me-2"></i>
+                                <input type="range" id="volume" class="form-range flex-grow-1" 
+                                       value="70" min="0" max="100" title="Âm lượng">
+                                <span id="volume-value" class="ms-2 badge bg-secondary">70%</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel - Playlist -->
+            <div class="col-lg-8">
+                <div class="card h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="bi bi-music-note-list"></i>
+                            Danh sách phát
+                        </h5>
+                        <div class="playlist-actions">
+                            <button id="add-song-btn" class="btn btn-outline-primary btn-sm me-2">
+                                <i class="bi bi-plus-circle"></i>
+                                Thêm bài hát
+                            </button>
+                            
+                            <input type="file" id="song-file-input" accept="audio/*" multiple style="display: none;">
+                            <button id="clear-playlist" class="btn btn-outline-danger btn-sm">
+                                <i class="bi bi-trash"></i>
+                                Xóa tất cả
+                            </button>
+                            <button id="save-playlist" class="btn btn-outline-success btn-sm">
+                                <i class="bi bi-download"></i>
+                                Lưu playlist
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="card-body p-0">
+                        <!-- Search Box -->
+                        <div class="p-3 border-bottom">
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-search"></i>
+                                </span>
+                                <input type="text" id="search-songs" class="form-control" 
+                                       placeholder="Tìm kiếm bài hát...">
+                            </div>
+                        </div>
+                        
+                        <!-- Playlist Items -->
+                        <div id="playlist" class="playlist-container">
+                            <div class="text-center p-4 text-muted">
+                                <i class="bi bi-music-note-beamed display-4"></i>
+                                <p class="mt-2">Danh sách phát trống</p>
+                                <p class="small">Các bài hát sẽ được tự động thêm vào đây</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sleep Timer Modal -->
+    <div class="modal fade" id="sleepTimerModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="bi bi-clock"></i>
+                        Hẹn giờ tắt nhạc
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <button class="btn btn-outline-primary w-100 sleep-timer-option" data-minutes="5">
+                                5 phút
+                            </button>
+                        </div>
+                        <div class="col-6">
+                            <button class="btn btn-outline-primary w-100 sleep-timer-option" data-minutes="10">
+                                10 phút
+                            </button>
+                        </div>
+                        <div class="col-6">
+                            <button class="btn btn-outline-primary w-100 sleep-timer-option" data-minutes="30">
+                                30 phút
+                            </button>
+                        </div>
+                        <div class="col-6">
+                            <button class="btn btn-outline-primary w-100 sleep-timer-option" data-minutes="60">
+                                1 giờ
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <div id="timer-status" class="alert alert-info d-none">
+                            <i class="bi bi-clock"></i>
+                            <span id="timer-text"></span>
+                            <button id="cancel-timer" class="btn btn-sm btn-outline-danger ms-2">Hủy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Song Modal -->
+    <div class="modal fade" id="addSongModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="bi bi-music-note-beamed"></i>
+                        Thêm bài hát mới
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Tabs -->
+                    <ul class="nav nav-tabs mb-3" id="addSongTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="upload-tab" data-bs-toggle="tab" 
+                                    data-bs-target="#upload-pane" type="button" role="tab">
+                                <i class="bi bi-upload"></i> Upload File
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="url-tab" data-bs-toggle="tab" 
+                                    data-bs-target="#url-pane" type="button" role="tab">
+                                <i class="bi bi-link-45deg"></i> From URL
+                            </button>
+                        </li>
+                    </ul>
+
+                    <!-- Tab Content -->
+                    <div class="tab-content" id="addSongTabContent">
+                        <!-- Upload Tab -->
+                        <div class="tab-pane fade show active" id="upload-pane" role="tabpanel">
+                            <div class="row">
+                                <div class="col-md-4 text-center">
+                                    <!-- File Info -->
+                                    <div class="file-preview mb-3">
+                                        <i class="bi bi-file-music display-4 text-primary"></i>
+                                        <h6 id="preview-filename" class="mt-2 text-muted">file.mp3</h6>
+                                        <small id="preview-filesize" class="text-muted">0 KB</small>
+                                    </div>
+                                    
+                                    <!-- Audio Preview -->
+                                    <audio id="preview-audio" controls class="w-100 mb-3" style="height: 40px;">
+                                        Your browser does not support audio preview.
+                                    </audio>
+                                    
+                                    <!-- Duration -->
+                                    <div class="alert alert-info">
+                                        <i class="bi bi-clock"></i>
+                                        <span id="preview-duration">Đang tính...</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-8">
+                                    <!-- Form nhập thông tin -->
+                                    <form id="song-info-form">
+                                        <div class="mb-3">
+                                            <label for="song-title" class="form-label">
+                                                <i class="bi bi-music-note"></i>
+                                                Tên bài hát <span class="text-danger">*</span>
+                                            </label>
+                                            <input type="text" class="form-control" id="song-title" 
+                                                   placeholder="Nhập tên bài hát..." required>
+                                            <div class="invalid-feedback">
+                                                Vui lòng nhập tên bài hát
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label for="song-artist" class="form-label">
+                                                <i class="bi bi-person"></i>
+                                                Nghệ sĩ <span class="text-danger">*</span>
+                                            </label>
+                                            <input type="text" class="form-control" id="song-artist" 
+                                                   placeholder="Nhập tên nghệ sĩ..." required>
+                                            <div class="invalid-feedback">
+                                                Vui lòng nhập tên nghệ sĩ
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label for="song-album" class="form-label">
+                                                <i class="bi bi-disc"></i>
+                                                Album (tùy chọn)
+                                            </label>
+                                            <input type="text" class="form-control" id="song-album" 
+                                                   placeholder="Nhập tên album...">
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label for="song-artwork-url" class="form-label">
+                                                <i class="bi bi-image"></i>
+                                                Artwork URL (tùy chọn)
+                                            </label>
+                                            <input type="url" class="form-control" id="song-artwork-url" 
+                                                   placeholder="https://example.com/artwork.jpg">
+                                            <div class="form-text">
+                                                Link hình ảnh bìa album từ internet
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Quick suggestions -->
+                                        <div class="mb-3">
+                                            <label class="form-label">
+                                                <i class="bi bi-lightbulb"></i>
+                                                Gợi ý nhanh
+                                            </label>
+                                            <div class="d-flex gap-2 flex-wrap">
+                                                <button type="button" class="btn btn-sm btn-outline-secondary" 
+                                                        onclick="fillFromFilename()">
+                                                    Lấy từ tên file
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-outline-secondary" 
+                                                        onclick="randomArtwork()">
+                                                    Artwork ngẫu nhiên
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- URL Tab -->
+                        <div class="tab-pane fade" id="url-pane" role="tabpanel">
+                            <form id="url-form">
+                                <div class="mb-3">
+                                    <label for="song-url" class="form-label">
+                                        <i class="bi bi-link-45deg"></i>
+                                        URL file nhạc <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="url" class="form-control" id="song-url" 
+                                           placeholder="https://example.com/song.mp3" required>
+                                    <div class="form-text">
+                                        Link trực tiếp đến file MP3, WAV, OGG hoặc M4A
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="url-song-title" class="form-label">
+                                                <i class="bi bi-music-note"></i>
+                                                Tên bài hát <span class="text-danger">*</span>
+                                            </label>
+                                            <input type="text" class="form-control" id="url-song-title" 
+                                                   placeholder="Nhập tên bài hát..." required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="url-song-artist" class="form-label">
+                                                <i class="bi bi-person"></i>
+                                                Nghệ sĩ <span class="text-danger">*</span>
+                                            </label>
+                                            <input type="text" class="form-control" id="url-song-artist" 
+                                                   placeholder="Nhập tên nghệ sĩ..." required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="url-song-duration" class="form-label">
+                                                <i class="bi bi-clock"></i>
+                                                Thời lượng
+                                            </label>
+                                            <input type="text" class="form-control" id="url-song-duration" 
+                                                   placeholder="3:45">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="url-song-artwork" class="form-label">
+                                                <i class="bi bi-image"></i>
+                                                Artwork URL
+                                            </label>
+                                            <input type="url" class="form-control" id="url-song-artwork" 
+                                                   placeholder="https://example.com/artwork.jpg">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- URL Preview -->
+                                <div class="mt-3">
+                                    <button type="button" id="preview-url" class="btn btn-outline-info btn-sm">
+                                        <i class="bi bi-play"></i> Preview URL
+                                    </button>
+                                    <audio id="url-preview-audio" controls class="d-none mt-2 w-100">
+                                        Your browser does not support audio preview.
+                                    </audio>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Hủy
+                    </button>
+                    <button type="button" id="confirm-add-song" class="btn btn-primary">
+                        <i class="bi bi-plus-circle"></i> Thêm bài hát
+                    </button>
+                    <button type="button" id="confirm-add-url" class="btn btn-success d-none">
+                        <i class="bi bi-link-45deg"></i> Thêm từ URL
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="notification-toast" class="toast" role="alert">
+            <div class="toast-header">
+                <i class="bi bi-music-note rounded me-2"></i>
+                <strong class="me-auto">Music Player</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body" id="toast-message">
+                <!-- Message will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Helper Functions for Modal -->
+    <script>
+        function fillFromFilename() {
+            const filename = document.getElementById('preview-filename').textContent;
+            const cleanName = filename.replace(/\.[^/.]+$/, "");
+            
+            // Cố gắng tách tên bài hát và nghệ sĩ từ tên file
+            // Các pattern thông dụng: "Artist - Song", "Song - Artist", "Artist_Song"
+            let title = '', artist = '';
+            
+            if (cleanName.includes(' - ')) {
+                const parts = cleanName.split(' - ');
+                if (parts.length >= 2) {
+                    artist = parts[0].trim();
+                    title = parts.slice(1).join(' - ').trim();
+                }
+            } else if (cleanName.includes('_')) {
+                const parts = cleanName.split('_');
+                if (parts.length >= 2) {
+                    artist = parts[0].trim().replace(/[-_]/g, ' ');
+                    title = parts.slice(1).join(' ').trim().replace(/[-_]/g, ' ');
+                }
+            } else {
+                title = cleanName.trim().replace(/[-_]/g, ' ');
+            }
+            
+            // Title case
+            const toTitleCase = (str) => {
+                return str.split(' ').map(word => 
+                    word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+                ).join(' ');
+            };
+            
+            document.getElementById('song-title').value = toTitleCase(title);
+            document.getElementById('song-artist').value = toTitleCase(artist);
+        }
+        
+        function randomArtwork() {
+            const randomId = Math.floor(Math.random() * 1000) + 1;
+            document.getElementById('song-artwork-url').value = `https://picsum.photos/200/200?random=${randomId}`;
+        }
+    </script>
+    
+    <!-- Custom JS Modules -->
+    <script src="js/storage.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/playlist.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/timer.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html> 
